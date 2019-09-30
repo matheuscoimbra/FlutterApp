@@ -11,7 +11,7 @@ class RotinaApi {
     final rotinas = List<Rotina>();
     User user =await User.get();
     var url =
-        '/services/rotina/$tipoRotina';
+        'services/rotina/$tipoRotina';
 
     Map<String, String> headers = {
       "Content-Type": "application/json",

@@ -22,6 +22,7 @@ class LoginApi {
          headers: {"Content-Type": "application/json"}
          , body: body);
      print('Response status: ${response.statusCode}');
+     print('Response body: ${response.body}');
 
      /*  Map mapResponse = jsonDecode(response.body);
     mapResponse.forEach((k,v)=> print(Rotina.fromJson(v).idProcessamento));*/
@@ -30,7 +31,7 @@ class LoginApi {
 
      if(response.statusCode==200){
        final user = UsuarioResponse.fromJson(mapResponse);
-       
+       print(user);
         user.user.save();
         User user2 = await User.get();
 

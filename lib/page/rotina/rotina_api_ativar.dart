@@ -7,11 +7,11 @@ import 'package:fisc/page/rotina/rotina.dart';
 import 'package:http/http.dart' as http;
 
 class RotinaApiAtivar {
- static Future<String> ativar(int idProcessamento) async {
+ static Future<String> ativar(String ativarPara, int idTipoConteudo, String tipo ) async {
 
     User user =await User.get();
     var url =
-        'services/rotina/parar/$idProcessamento';
+        'services/rotina/$ativarPara/$idTipoConteudo/$tipo';
 
     Map<String, String> headers = {
       "Content-Type": "application/json",

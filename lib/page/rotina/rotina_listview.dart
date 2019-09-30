@@ -1,21 +1,22 @@
 
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:fisc/page/rotina/rotina.dart';
 import 'package:fisc/page/rotina/rotina_api.dart';
 import 'package:fisc/page/rotina/rotina_api_ativar.dart';
+import 'package:fisc/page/rotina/rotina_block.dart';
 import 'package:fisc/page/rotina/rotina_detalhe.dart';
 import 'package:fisc/utils/alert.dart';
 import 'package:fisc/utils/nav.dart';
 import 'package:fisc/widgets/icon_widget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class RotinasListView extends StatefulWidget {
 
   String _tipoRotina;
-
-
   RotinasListView(this._tipoRotina);
 
   @override
@@ -25,19 +26,19 @@ class RotinasListView extends StatefulWidget {
 class _RotinasListViewState extends State<RotinasListView> with AutomaticKeepAliveClientMixin<RotinasListView> {
   List<Rotina> rotinas;
 
-  final _streamControler =  StreamController<List<Rotina>>();
+
+  final _block = RotinaBloc();
 
   @override
   void initState() {
     // TODO: implement initState
+
+      _block.loaldData(widget._tipoRotina);
+
     super.initState();
-  _loadData();
   }
 
-  _loadData() async{
-    List<Rotina> rotinas = await  RotinaApi.getRotinas(widget._tipoRotina);
-    _streamControler.add(rotinas);
-  }
+
 
   @override
   // TODO: implement wantKeepAlive
@@ -53,9 +54,14 @@ class _RotinasListViewState extends State<RotinasListView> with AutomaticKeepAli
 
 
     return StreamBuilder(
-      stream: _streamControler.stream,
+      stream: _block.stream,
       builder: (context, snapshot){
-
+        if(snapshot.hasError){
+          return Center(
+            child: Text(
+              "Não foi possivel realizar consulta", style: TextStyle(fontSize: 22, color: Colors.red),
+            ));
+        }
         if(!snapshot.hasData){
           return Center(
             child: CircularProgressIndicator(),
@@ -63,7 +69,10 @@ class _RotinasListViewState extends State<RotinasListView> with AutomaticKeepAli
         }
 
         List<Rotina> rtinas = snapshot.data;
-        return _listView(rtinas);
+        return RefreshIndicator(
+          onRefresh: _onRefresh,
+          child: _listView(rtinas),
+        );
       },
     );
   }
@@ -286,15 +295,24 @@ class _RotinasListViewState extends State<RotinasListView> with AutomaticKeepAli
                         ),
                         r.statusProcessamento.contains("ATIVO")? FlatButton(
                           child: const Text('Parar',style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-                          onPressed: () { RotinaApiAtivar.ativar(r.idProcessamento).then(
-                              (res)=> alert(context,res)
+                          onPressed: () { RotinaApiAtivar.ativar("parar",r.tipoConteudo.idTipoConteudo,r.tipoProcessamento).then(
+                              (res)=> {
+
+                                alert(context,jsonDecode(res)["message"]),
+                                super.reassemble()
+                              }
                           );
                           /*super.didUpdateWidget(RotinasListView(widget._tipoRotina));*/
                           },
                         ):
                         FlatButton(
                           child: const Text('Ativar',style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-                          onPressed: () { /* ... */ },
+                          onPressed: () { RotinaApiAtivar.ativar("ativar",r.tipoConteudo.idTipoConteudo,r.tipoProcessamento).then(
+                                  (res)=> {alert(context,jsonDecode(res)["message"]),
+                             super.reassemble()}
+                          );
+                            /*super.didUpdateWidget(RotinasListView(widget._tipoRotina));*/
+                          },
                         ),
                       ],
                     ),
@@ -343,6 +361,11 @@ class _RotinasListViewState extends State<RotinasListView> with AutomaticKeepAli
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    _streamControler.close();
+   _block.dispose();
+  }
+
+  Future<void> _onRefresh() async{
+    await _block.loaldData(widget._tipoRotina);
+    return;
   }
 }
