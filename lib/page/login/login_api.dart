@@ -9,7 +9,7 @@ class LoginApi {
   static Future<ApiResponse<UsuarioResponse>> login(String login, String Senha) async {
    try{
      var url =
-         '/services/usuario/autenticacao';
+         'services/usuario/autenticacao';
 
      Map params = {
        'login': login,
@@ -31,11 +31,8 @@ class LoginApi {
 
      if(response.statusCode==200){
        final user = UsuarioResponse.fromJson(mapResponse);
-       print(user);
         user.user.save();
         User user2 = await User.get();
-
-        print("user2: $user2");
 
        return ApiResponse.ok(user);
      }

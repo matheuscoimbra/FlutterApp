@@ -33,8 +33,7 @@ class _RotinaDetalheState extends State<RotinaDetalhe> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Card(
-            color: widget.rotina.statusProcessamentoLabel == "PARADO" ? Colors
-                .redAccent[200] : Colors.green[400],
+            color: ( widget.rotina.statusProcessamentoLabel=="PARADO" ||  widget.rotina.statusProcessamentoLabel=="ERRO")?Colors.redAccent[200]:( widget.rotina.statusProcessamentoLabel=="EM PARALISAÇÃO")?Colors.orange[400]:Colors.green[400],
             child: Center(
               child: Stack(
                 children: <Widget>[

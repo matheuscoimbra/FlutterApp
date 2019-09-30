@@ -1,3 +1,6 @@
+import 'package:fisc/page/login/login_page.dart';
+import 'package:fisc/utils/nav.dart';
+import 'package:fisc/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 
 alert(BuildContext context, String msg) {
@@ -21,5 +24,22 @@ alert(BuildContext context, String msg) {
         ),
       );
     },
+  );
+}
+
+alertLogin(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (context) => new AlertDialog(
+      title: new Text('Sessão Expirada'),
+      content: new Text('Você voltará para tela de login'),
+      actions: <Widget>[
+        new GestureDetector(
+          onTap: () => push(context, LoginPage(),replace: true),
+          child: roundedButton(
+              " OK ", const Color(0xFF167F67), const Color(0xFFFFFFFF)),
+        ),
+      ],
+    ),
   );
 }

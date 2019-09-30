@@ -33,7 +33,7 @@ class _RotinasListViewState extends State<RotinasListView> with AutomaticKeepAli
   void initState() {
     // TODO: implement initState
 
-      _block.loaldData(widget._tipoRotina);
+      _block.loaldData(widget._tipoRotina, context);
 
     super.initState();
   }
@@ -212,7 +212,7 @@ class _RotinasListViewState extends State<RotinasListView> with AutomaticKeepAli
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Card(
-                    color: r.statusProcessamentoLabel=="PARADO"?Colors.redAccent[200]:(r.statusProcessamento=="EM PARALISAÇÃO")?Colors.orange[400]:Colors.green[400],
+                    color: (r.statusProcessamentoLabel=="PARADO" || r.statusProcessamentoLabel=="ERRO")?Colors.redAccent[200]:(r.statusProcessamentoLabel=="EM PARALISAÇÃO")?Colors.orange[400]:Colors.green[400],
                     child: Center(
                       child: Stack(
                         children: <Widget>[
@@ -295,7 +295,7 @@ class _RotinasListViewState extends State<RotinasListView> with AutomaticKeepAli
                         ),
                         r.statusProcessamento.contains("ATIVO")? FlatButton(
                           child: const Text('Parar',style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-                          onPressed: () { RotinaApiAtivar.ativar("parar",r.tipoConteudo.idTipoConteudo,r.tipoProcessamento).then(
+                          onPressed: () { RotinaApiAtivar.ativar("parar",r.tipoConteudo.idTipoConteudo,r.tipoProcessamento,context).then(
                               (res)=> {
 
                                 alert(context,jsonDecode(res)["message"]),
@@ -307,7 +307,7 @@ class _RotinasListViewState extends State<RotinasListView> with AutomaticKeepAli
                         ):
                         FlatButton(
                           child: const Text('Ativar',style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-                          onPressed: () { RotinaApiAtivar.ativar("ativar",r.tipoConteudo.idTipoConteudo,r.tipoProcessamento).then(
+                          onPressed: () { RotinaApiAtivar.ativar("ativar",r.tipoConteudo.idTipoConteudo,r.tipoProcessamento,context).then(
                                   (res)=> {alert(context,jsonDecode(res)["message"]),
                              super.reassemble()}
                           );
@@ -365,7 +365,7 @@ class _RotinasListViewState extends State<RotinasListView> with AutomaticKeepAli
   }
 
   Future<void> _onRefresh() async{
-    await _block.loaldData(widget._tipoRotina);
+    await _block.loaldData(widget._tipoRotina,context);
     return;
   }
 }
