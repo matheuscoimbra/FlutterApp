@@ -212,7 +212,7 @@ class _RotinasListViewState extends State<RotinasListView> with AutomaticKeepAli
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Card(
-                    color: r.statusProcessamentoLabel=="PARADO"?Colors.redAccent[200]:Colors.green[400],
+                    color: r.statusProcessamentoLabel=="PARADO"?Colors.redAccent[200]:(r.statusProcessamento=="EM PARALISAÇÃO")?Colors.orange[400]:Colors.green[400],
                     child: Center(
                       child: Stack(
                         children: <Widget>[
