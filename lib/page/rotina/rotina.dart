@@ -1,3 +1,19 @@
+import 'package:fisc/utils/event_bus.dart';
+
+class RotinaEvent extends Event {
+
+
+  String tipo;
+
+  RotinaEvent( this.tipo);
+
+  @override
+  String toString() {
+    return 'RotinaEvent{tipo: $tipo}';
+  }
+}
+
+
 
 class Rotina {
   int _idProcessamento;

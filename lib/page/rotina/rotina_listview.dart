@@ -8,11 +8,14 @@ import 'package:fisc/page/rotina/rotina_api_ativar.dart';
 import 'package:fisc/page/rotina/rotina_block.dart';
 import 'package:fisc/page/rotina/rotina_detalhe.dart';
 import 'package:fisc/utils/alert.dart';
+import 'package:fisc/utils/event_bus.dart';
 import 'package:fisc/utils/nav.dart';
 import 'package:fisc/widgets/icon_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import '../../main.dart';
 
 class RotinasListView extends StatefulWidget {
 
@@ -26,16 +29,28 @@ class RotinasListView extends StatefulWidget {
 class _RotinasListViewState extends State<RotinasListView> with AutomaticKeepAliveClientMixin<RotinasListView> {
   List<Rotina> rotinas;
 
-
+  StreamSubscription<Event> subscription;
   final _block = RotinaBloc();
 
   @override
   void initState() {
     // TODO: implement initState
-
-      _block.loaldData(widget._tipoRotina, context);
-
     super.initState();
+
+
+    _block.loaldData(widget._tipoRotina, context);
+
+
+    // Escutando uma stream
+    final bus = EventBus.get(context);
+    subscription = bus.stream.listen((Event e){
+      print("Event $e");
+      RotinaEvent carroEvent = e;
+      if(carroEvent.tipo == widget._tipoRotina) {
+        _block.loaldData(widget._tipoRotina, context);
+      }
+    });
+
   }
 
 
@@ -295,7 +310,7 @@ class _RotinasListViewState extends State<RotinasListView> with AutomaticKeepAli
                         ),
                         r.statusProcessamento.contains("ATIVO")? FlatButton(
                           child: const Text('Parar',style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-                          onPressed: () { RotinaApiAtivar.ativar("parar",r.tipoConteudo.idTipoConteudo,r.tipoProcessamento,context).then(
+                          onPressed: () { RotinaApiAtivar.ativar("parar",r.tipoConteudo.idTipoConteudo,r.tipoProcessamento,context,widget._tipoRotina).then(
                               (res)=> {
 
                                 alert(context,jsonDecode(res)["message"]),
@@ -307,7 +322,7 @@ class _RotinasListViewState extends State<RotinasListView> with AutomaticKeepAli
                         ):
                         FlatButton(
                           child: const Text('Ativar',style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-                          onPressed: () { RotinaApiAtivar.ativar("ativar",r.tipoConteudo.idTipoConteudo,r.tipoProcessamento,context).then(
+                          onPressed: () { RotinaApiAtivar.ativar("ativar",r.tipoConteudo.idTipoConteudo,r.tipoProcessamento,context,widget._tipoRotina).then(
                                   (res)=> {alert(context,jsonDecode(res)["message"]),
                              super.reassemble()}
                           );
@@ -361,7 +376,8 @@ class _RotinasListViewState extends State<RotinasListView> with AutomaticKeepAli
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-   _block.dispose();
+    _block.dispose();
+    subscription.cancel();
   }
 
   Future<void> _onRefresh() async{
