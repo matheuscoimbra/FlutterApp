@@ -4,16 +4,18 @@ import 'package:fisc/page/api_response.dart';
 import 'package:fisc/page/login/user.dart';
 import 'package:fisc/utils/prefs.dart';
 import 'package:http/http.dart' as http;
+import 'package:device_id/device_id.dart';
 
 class LoginApi {
   static Future<ApiResponse<UsuarioResponse>> login(String login, String Senha) async {
     try{
       var url =
           '/services/usuario/autenticacao';
-
+      String device_id = await DeviceId.getID;
       Map params = {
         'login': login,
         'senha': Senha,
+        'telefoneId': device_id
       };
 
       var body = json.encode(params);
