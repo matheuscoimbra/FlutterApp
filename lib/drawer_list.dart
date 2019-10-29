@@ -1,3 +1,4 @@
+import 'package:fisc/page/acompanhamento/acompanhamento_list.dart';
 import 'package:fisc/page/home/initial_page.dart';
 import 'package:fisc/page/login/login_page.dart';
 import 'package:fisc/page/login/user.dart';
@@ -40,6 +41,17 @@ class DrawerList extends StatelessWidget {
               onTap: () {
                 print("Item 1");
                 push(context, HomePage());
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.all_inclusive),
+              title: Text("Acompanhamento"),
+              subtitle: Text("Acompanhamento de conteúdos..."),
+              trailing: Icon(Icons.arrow_forward),
+              onTap: () {
+                print("carga");
+                push(context,AcompanhamentoList());
+
               },
             ),
             ListTile(

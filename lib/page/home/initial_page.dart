@@ -211,7 +211,7 @@ class _HomeState extends State<Home> {
 
     // NOTE: Replace with your own app ID from https://www.onesignal.com
     await OneSignal.shared
-        .init("762a9245-09ae-497c-8df1-3924d1fc1b4d", iOSSettings: settings);
+        .init("0b2be6ae-f2be-4cae-91d0-ab287fd2489a", iOSSettings: settings);
 
     OneSignal.shared
         .setInFocusDisplayType(OSNotificationDisplayType.notification);

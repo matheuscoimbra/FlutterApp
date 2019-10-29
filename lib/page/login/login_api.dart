@@ -10,12 +10,12 @@ class LoginApi {
   static Future<ApiResponse<UsuarioResponse>> login(String login, String Senha) async {
     try{
       var url =
-          '/services/usuario/autenticacao';
+          'http://192.168.0.3:8082/sped-web/services/usuario/autenticacao';
       String device_id = await DeviceId.getID;
       Map params = {
         'login': login,
         'senha': Senha,
-        'telefoneId': device_id
+        'telefoneId': 'cdaa1947-ea95-4871-80e6-f38265f2d758'
       };
 
       var body = json.encode(params);

@@ -50,7 +50,7 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> initPlatformState() async {
     OneSignal.shared.init(
-        "762a9245-09ae-497c-8df1-3924d1fc1b4d",
+        "0b2be6ae-f2be-4cae-91d0-ab287fd2489a",
         iOSSettings: {
           OSiOSSettings.autoPrompt: false,
           OSiOSSettings.inAppLaunchUrl: true

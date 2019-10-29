@@ -11,20 +11,18 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:fisc/utils/http_helper.dart' as http2;
 
-class RotinaApi {
- static Future<List<Rotina>> getRotinas(BuildContext context, String tipoRotina) async {
+import 'acompanhamento.dart';
+
+class AcompanhamentoApi {
+  static Future<Acompanhamento> getAcompanhamento(BuildContext context) async {
     final rotinas = List<Rotina>();
     User user =await User.get();
 
     var url =
-        'http://192.168.0.3:8082/sped-web/services/rotina/$tipoRotina';
+        'http://192.168.0.3:8082/sped-web/services/conteudo/consultar/carga?tipo=13&dataInicial=2019-03-12&dataFinal=2019-03-14';
 
-    Map<String, String> headers = {
-      "Content-Type": "application/json",
-      "Authorization":"Bearer ${user.token}"
-    };
 
-    print(headers);
+
 
     var response = await http2.get(url);
 
@@ -36,10 +34,11 @@ class RotinaApi {
 
     print('Response status: ${response.statusCode}');
     Map mapResponse = jsonDecode(response.body);
-    mapResponse.forEach((k,v)=> rotinas.add(Rotina.fromJson(v)));
+    print(mapResponse);
+    final Acompanhamento acompanhamento = Acompanhamento.fromJson(mapResponse);
+    print(acompanhamento);
 
-    rotinas.forEach((f)=>print(f.tipoConteudo.categoria));
 
-    return rotinas;
- }
+    return acompanhamento;
+  }
 }
