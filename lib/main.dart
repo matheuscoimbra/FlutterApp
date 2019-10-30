@@ -1,10 +1,15 @@
 import 'package:fisc/page/login/login_page.dart';
+import 'package:fisc/page/login/service_locator.dart';
 import 'package:fisc/utils/event_bus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
 
-void main() => runApp(MyApp());
+void main(){
+  setupLocator();
+  runApp(MyApp());
+}
 
 class MyApp extends StatefulWidget {
   // This widget is the root of your application.
@@ -38,6 +43,15 @@ class _MyAppState extends State<MyApp> {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        localizationsDelegates: [
+          // ... app-specific localization delegate[s] here
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate
+        ],
+        supportedLocales: [
+          const Locale('pt'),
+          // ... other locales the app supports
+        ],
         theme: ThemeData(
           brightness: Brightness.light,
           primarySwatch: Colors.blue,

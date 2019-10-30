@@ -17,7 +17,7 @@ class RotinaApi {
     User user =await User.get();
 
     var url =
-        'http://192.168.0.3:8082/sped-web/services/rotina/$tipoRotina';
+        'http://192.168.0.6:8082/sped-web/services/rotina/$tipoRotina';
 
     Map<String, String> headers = {
       "Content-Type": "application/json",

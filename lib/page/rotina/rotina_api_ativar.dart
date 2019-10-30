@@ -16,7 +16,7 @@ class RotinaApiAtivar {
 
     User user =await User.get();
     var url =
-        'http://192.168.0.3:8082/sped-web/services/rotina/$ativarPara/$idTipoConteudo/$tipo';
+        'http://192.168.0.6:8082/sped-web/services/rotina/$ativarPara/$idTipoConteudo/$tipo';
 
     Map<String, String> headers = {
       "Content-Type": "application/json",

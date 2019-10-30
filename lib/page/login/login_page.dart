@@ -12,6 +12,12 @@ import 'package:fisc/widgets/app_button.dart';
 import 'package:fisc/widgets/app_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:local_auth/local_auth.dart';
+import 'package:flutter/services.dart';
+
+import 'local_authentication_service.dart';
+import 'service_locator.dart';
+
 
 class LoginPage extends StatefulWidget {
   @override
@@ -31,6 +37,14 @@ class _LoginPageState extends State<LoginPage> {
 
   final _formKey = GlobalKey<FormState>();
   bool _showProgress = false;
+  var _title = "Pronto";
+  var _message = "Toque no botão para iniciar a autenticação";
+  var _icone = Icons.settings_power;
+  var _colorIcon = Colors.yellow;
+  var _colorButton = Colors.blue;
+
+  final LocalAuthentication _localAuth = LocalAuthentication();
+  final LocalAuthenticationService _localAuth2 = locator<LocalAuthenticationService>();
 
 
   @override
@@ -102,11 +116,41 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  Future<void> _checkBiometricSensor() async {
+    try {
+      var authenticate = await _localAuth.authenticateWithBiometrics(
+          localizedReason: 'Por favor autentique-se para continuar');
+      setState(() {
+        if (authenticate) {
+          _title = "Ótimo";
+          _message = "Verificação biométrica funcionou!!";
+          _icone = Icons.beenhere;
+          _colorIcon = Colors.green;
+          _colorButton = Colors.green;
+        } else {
+          _title = "Ops";
+          _message = "Tente novamente!";
+          _icone = Icons.clear;
+          _colorIcon = Colors.red;
+          _colorButton = Colors.red;
+        }
+      });
+    } on PlatformException catch (e) {
 
+      setState(() {
+        _title = "Desculpe";
+        _message = "Não conseguimos encontrar o sensor biométrico :(";
+        _icone = Icons.clear;
+        _colorIcon = Colors.red;
+        _colorButton = Colors.red;
+      });
+
+    }
+  }
 
   void _onClickLogin() async{
 
-    bool formOk = _formKey.currentState.validate();
+     bool formOk = _formKey.currentState.validate();
     if(!formOk){
       return;
     }
@@ -128,6 +172,7 @@ class _LoginPageState extends State<LoginPage> {
 
 
   }
+
 
   String _validaSenha(String text){
       if(text.isEmpty){

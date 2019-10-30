@@ -19,7 +19,7 @@ class AcompanhamentoApi {
     User user =await User.get();
 
     var url =
-        'http://192.168.0.3:8082/sped-web/services/conteudo/consultar/carga?tipo=13&dataInicial=2019-03-12&dataFinal=2019-03-14';
+        'http://192.168.0.6:8082/sped-web/services/conteudo/consultar/carga?tipo=13&dataInicial=2019-03-12&dataFinal=2019-03-14';
 
 
 
