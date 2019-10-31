@@ -94,8 +94,7 @@ class Utils {
   }
 
 
-  static int getColorHexFromStr(String colorStr)
-  {
+  static int getColorHexFromStr(String colorStr) {
     colorStr = "FF" + colorStr;
     colorStr = colorStr.replaceAll("#", "");
     int val = 0;

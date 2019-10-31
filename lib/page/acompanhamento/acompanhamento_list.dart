@@ -1,6 +1,9 @@
 import 'package:fisc/drawer_list.dart';
 import 'package:fisc/main.dart';
 import 'package:fisc/page/acompanhamento/acompanhamento_block.dart';
+import 'package:fisc/utils/utils.dart';
+import 'package:fisc/widgets/utils_widget.dart';
+import 'package:fisc/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -14,6 +17,7 @@ class AcompanhamentoList extends StatefulWidget {
 class _AcompanhamentoListState extends State<AcompanhamentoList> {
   Acompanhamento acompanhamento;
   final _block = AcompanhamentoBloc();
+  Screen size;
 
   @override
   void initState() {
@@ -24,6 +28,7 @@ class _AcompanhamentoListState extends State<AcompanhamentoList> {
 
   @override
   Widget build(BuildContext context) {
+    size = Screen(MediaQuery.of(context).size);
     return Scaffold(
       appBar: AppBar(
         title: Text("Acompanhamento"),
@@ -85,99 +90,114 @@ class _AcompanhamentoListState extends State<AcompanhamentoList> {
               var key = acompanhamento.historico.keys.elementAt(index);
 
               return Container(
-                padding: EdgeInsets.all(16.0),
-                child: Card(
-                  color: Colors.blueGrey[100],
+                child: SingleChildScrollView(
                   child: Column(
-                    children: <Widget>[
-                      Center(
-                        child: ListTile(
-                          leading: Icon(Icons.calendar_today),
-                          title: Text(
-                            "${ new DateFormat('dd/MM/yyyy (EEEE)','pt').format(DateTime.parse(key))}",
-                            style: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.blueAccent),
-                          ),
-                        ),
-                      ),
-                      Divider(
-                      height: 10.0,
-                        color: Colors.black,
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Container(
-                                  padding: const EdgeInsets.all(16.0),
-                                  color: acompanhamento.historico[key][0].estilo=="com_erro"?Colors.redAccent:Colors.blue,
-                                  child: Row(
-                                    children: <Widget>[
-                                      Text(
-                                        "${acompanhamento.historico[key][0].nome}",
-                                        style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  "${acompanhamento.historico[key][0].descricao}",
-                                  style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Container(
-                                  padding: const EdgeInsets.all(16.0),
-                                  color: acompanhamento.historico[key][1].estilo=="com_erro"?Colors.redAccent:Colors.blue,
-                                  child: Row(
-                                    children: <Widget>[
-                                      Text(
-                                        "${acompanhamento.historico[key][1].nome}",
-                                        style: TextStyle(fontSize: 16,color: Colors.white, fontWeight: FontWeight.bold),
-                                      ),
-
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  "${acompanhamento.historico[key][1].descricao}",
-                                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                              ],
-                            ),
-                          ),
-
-                        ],
-                      ),
-                    ],
+                    children: <Widget>[upperPart(key, key2:acompanhamento.historico)],
                   ),
                 ),
               );
             }));
+  }
+
+  Widget upperPart( key, {key2}) {
+    return Stack(
+      children: <Widget>[
+        ClipPath(
+          clipper: UpperClipper(),
+          child: Container(
+            height: size.getWidthPx(240),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [colorCurve, colorCurveSecondary],
+              ),
+            ),
+          ),
+        ),
+        Column(
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.only(top: size.getWidthPx(36)),
+              child: Column(
+                children: <Widget>[
+                  titleWidget(key),
+                  SizedBox(height: size.getWidthPx(10)),
+                  upperBoxCard(key, key2:key2),
+                ],
+              ),
+            ),
+
+        ),
+      ],
+    );
+  }
+  Text titleWidget(var key) {
+    return Text( "${ new DateFormat('dd/MM/yyyy (EEEE)','pt').format(DateTime.parse(key))}",
+        style: TextStyle(
+            fontFamily: 'Exo2',
+            fontSize: 24.0,
+            fontWeight: FontWeight.w900,
+            color: Colors.white));
+  }
+
+  Card upperBoxCard(var key,{key2}) {
+    return Card(
+        elevation: 4.0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        margin: EdgeInsets.symmetric(
+            horizontal: size.getWidthPx(20), vertical: size.getWidthPx(16)),
+        borderOnForeground: true,
+        child: Container(
+          height: size.getWidthPx(150),
+          child: Column(
+            children: <Widget>[
+              leftAlignText(
+                  text: "Resultados :",
+                  leftPadding: size.getWidthPx(16),
+                  textColor: textPrimaryColor,
+                  fontSize: 16.0),
+              Container(
+                color: key2[key][0].estilo=="com_erro"?Colors.redAccent:Colors.greenAccent,
+                child: CenterAlignText(
+                    text: "${key2[key][0].nome}",
+                    textColor: textPrimaryColor,
+                    fontSize: 16.0),
+              ),
+
+
+              SizedBox(
+                height: 10.0,
+              ),
+
+              CenterAlignText(
+                  text: "${key2[key][0].descricao}",
+                  textColor: textPrimaryColor,
+                  fontSize: 16.0),
+
+              Divider(
+                color: Colors.black,
+                height: 20.0,
+              ),
+              Container(
+                color: key2[key][1].estilo=="com_erro"?Colors.redAccent:Colors.greenAccent,
+                child: CenterAlignText(
+                    text: "${key2[key][1].nome}",
+                    textColor: textPrimaryColor,
+                    fontSize: 16.0),
+              ),
+
+              SizedBox(
+                height: 10.0,
+              ),
+              CenterAlignText(
+                  text: "${key2[key][1].descricao}",
+                  textColor: textPrimaryColor,
+                  fontSize: 16.0),
+
+
+
+
+            ],
+          ),
+        ));
   }
 }
