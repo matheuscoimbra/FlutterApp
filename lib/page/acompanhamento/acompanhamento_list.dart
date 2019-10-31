@@ -125,9 +125,10 @@ class _AcompanhamentoListState extends State<AcompanhamentoList> {
                 ],
               ),
             ),
+    ]
+        )
 
-        ),
-      ],
+      ]
     );
   }
   Text titleWidget(var key) {

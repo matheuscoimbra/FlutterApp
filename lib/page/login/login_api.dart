@@ -44,5 +44,6 @@ class LoginApi {
       print("erro no login");
       return ApiResponse.error("Não foi possível fazer o login");
     }
+  }
 
 }

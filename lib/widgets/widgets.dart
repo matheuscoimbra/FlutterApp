@@ -6,5 +6,4 @@ export './visibility.dart';
 export './upper_curve_clipper.dart';
 export './progress_widget.dart';
 
-export './setting_section.dart';
 export './switch_row.dart';
