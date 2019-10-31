@@ -1,5 +1,4 @@
 import 'package:fisc/page/login/login_page.dart';
-import 'package:fisc/page/login/service_locator.dart';
 import 'package:fisc/utils/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -7,7 +6,7 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
 
 void main(){
-  setupLocator();
+
   runApp(MyApp());
 }
 

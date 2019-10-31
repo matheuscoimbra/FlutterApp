@@ -24,14 +24,22 @@ class RotinaApi {
       "Authorization":"Bearer ${user.token}"
     };
 
-    print(headers);
+    print(url);
 
     var response = await http2.get(url);
 
-    if(response.statusCode==401 || response.statusCode==500 || response.statusCode==403) {
+    if(response.statusCode==401 ) {
       User.clear();
       alert(context,"Sessão expirada!");
       alertLogin(context);
+    }
+    if( response.statusCode==403){
+      alert(context,"Acesso negado!");
+    }
+    if(response.statusCode==500){
+
+      alert(context,"Erro inesperado!");
+      alertHome(context);
     }
 
     print('Response status: ${response.statusCode}');

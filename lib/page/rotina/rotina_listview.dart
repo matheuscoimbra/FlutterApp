@@ -31,7 +31,7 @@ class _RotinasListViewState extends State<RotinasListView> with AutomaticKeepAli
 
   StreamSubscription<Event> subscription;
   final _block = RotinaBloc();
-
+  bool showProgress = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -47,6 +47,7 @@ class _RotinasListViewState extends State<RotinasListView> with AutomaticKeepAli
       print("Event $e");
       RotinaEvent carroEvent = e;
       if(carroEvent.tipo == widget._tipoRotina) {
+        print("evento ${widget._tipoRotina}");
         _block.loaldData(widget._tipoRotina, context);
       }
     });
@@ -179,8 +180,26 @@ class _RotinasListViewState extends State<RotinasListView> with AutomaticKeepAli
                     child: ButtonBar(
                       children: <Widget>[
                         FlatButton(
-                          child: const Text('Ativar',style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-                          onPressed: () { /* ... */ },
+                          child: showProgress? Center(
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                            ),
+                          ):  Text('Ativar',style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                          onPressed: ()
+
+                          {
+                            setState(() {
+                              showProgress=true;
+                              print(showProgress);
+                            });
+                            RotinaApiAtivar.ativar("ativar",r.tipoConteudo.idTipoConteudo,r.tipoProcessamento,context,widget._tipoRotina).then(
+                                  (res)=> {alert(context,jsonDecode(res)["message"]),
+                                super.reassemble()}
+                          );
+                            setState(() {
+                              showProgress=false;
+                            });
+                          },
                         )
 
                       ],
@@ -308,23 +327,23 @@ class _RotinasListViewState extends State<RotinasListView> with AutomaticKeepAli
                         SizedBox(
                           width: 25,
                         ),
-                        r.statusProcessamento.contains("ATIVO")? FlatButton(
-                          child: const Text('Parar',style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-                          onPressed: () { RotinaApiAtivar.ativar("parar",r.tipoConteudo.idTipoConteudo,r.tipoProcessamento,context,widget._tipoRotina).then(
-                              (res)=> {
-
-                                alert(context,jsonDecode(res)["message"]),
-                                super.reassemble()
-                              }
-                          );
-                          /*super.didUpdateWidget(RotinasListView(widget._tipoRotina));*/
-                          },
-                        ):
+                       (r.statusProcessamentoLabel.contains("PARADO") || r.statusProcessamentoLabel.contains("EM PARALISAÇÃO") || r.statusProcessamentoLabel.contains("CONCLUIDO (aguard próx execução...)"))?
                         FlatButton(
                           child: const Text('Ativar',style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
                           onPressed: () { RotinaApiAtivar.ativar("ativar",r.tipoConteudo.idTipoConteudo,r.tipoProcessamento,context,widget._tipoRotina).then(
                                   (res)=> {alert(context,jsonDecode(res)["message"]),
                              super.reassemble()}
+                          );
+                            /*super.didUpdateWidget(RotinasListView(widget._tipoRotina));*/
+                          },
+                        ):FlatButton(
+                          child: const Text('Parar',style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                          onPressed: () { RotinaApiAtivar.ativar("parar",r.tipoConteudo.idTipoConteudo,r.tipoProcessamento,context,widget._tipoRotina).then(
+                                  (res)=> {
+
+                                alert(context,jsonDecode(res)["message"]),
+                                super.reassemble()
+                              }
                           );
                             /*super.didUpdateWidget(RotinasListView(widget._tipoRotina));*/
                           },
