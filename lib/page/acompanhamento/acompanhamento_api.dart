@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:fisc/page/api_response.dart';
-import 'package:fisc/page/login/login_page.dart';
+
 import 'package:fisc/page/login/user.dart';
 import 'package:fisc/page/rotina/rotina.dart';
 import 'package:fisc/utils/alert.dart';

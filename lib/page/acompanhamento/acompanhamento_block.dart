@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:fisc/page/rotina/rotina.dart';
-import 'package:fisc/page/rotina/rotina_api.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'acompanhamento.dart';
