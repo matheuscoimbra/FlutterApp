@@ -1,3 +1,4 @@
+import 'package:fisc/page/home/page_splash.dart';
 import 'package:fisc/page/login/login_page.dart';
 import 'package:fisc/utils/event_bus.dart';
 import 'package:flutter/material.dart';
@@ -17,10 +18,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _debugLabelString = "";
-  String _emailAddress;
-  String _externalUserId;
-  bool _enableConsentButton = false;
 
   // CHANGE THIS parameter to true if you want to test GDPR privacy consent
   bool _requireConsent = true;
@@ -56,7 +53,7 @@ class _MyAppState extends State<MyApp> {
           primarySwatch: Colors.blue,
           scaffoldBackgroundColor: Colors.white
         ),
-        home: LoginPage(),
+        home: SplashScreen(),
       ),
     );
   }

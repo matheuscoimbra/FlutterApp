@@ -46,6 +46,23 @@ alertHome(BuildContext context) {
   );
 }
 
+alertConexao(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (context) => new AlertDialog(
+      title: new Text('Erro'),
+      content: new Text('Sem Conexão'),
+      actions: <Widget>[
+        new GestureDetector(
+          onTap: () => push(context, Home(),replace: true),
+          child: roundedButton(
+              " OK ", const Color(0xFF167F67), const Color(0xFFFFFFFF)),
+        ),
+      ],
+    ),
+  );
+}
+
 alertLogin(BuildContext context) {
   showDialog(
     context: context,

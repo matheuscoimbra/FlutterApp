@@ -6,6 +6,7 @@ import 'package:fisc/page/login/user.dart';
 import 'package:fisc/page/rotina/rotina.dart';
 import 'package:fisc/utils/alert.dart';
 import 'package:fisc/utils/nav.dart';
+import 'package:fisc/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:fisc/utils/http_helper.dart' as http2;
@@ -22,7 +23,7 @@ class AcompanhamentoApi {
 
 
 
-
+    if (await Utils.checkConnection()) {
     var response = await http2.get(url);
 
     if(response.statusCode==401 || response.statusCode==500 || response.statusCode==403) {
@@ -39,5 +40,9 @@ class AcompanhamentoApi {
 
 
     return acompanhamento;
+  }else{
+      alertConexao(context);
+      return null;
+    }
   }
 }

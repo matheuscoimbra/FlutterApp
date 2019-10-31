@@ -8,6 +8,7 @@ import 'package:fisc/page/rotina/rotina.dart';
 import 'package:fisc/utils/alert.dart';
 import 'package:fisc/utils/event_bus.dart';
 import 'package:fisc/utils/nav.dart';
+import 'package:fisc/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
@@ -26,7 +27,7 @@ class RotinaApiAtivar {
     };
 
     print(url);
-
+    if (await Utils.checkConnection()) {
     var response = await http.get(url,
         headers: headers
        );
@@ -57,5 +58,9 @@ class RotinaApiAtivar {
     print(result);
 
     return result;
+ }else{
+      alertConexao(context);
+      return null;
+    }
  }
 }

@@ -2,12 +2,15 @@ import 'dart:convert';
 
 import 'package:fisc/page/api_response.dart';
 import 'package:fisc/page/login/user.dart';
+import 'package:fisc/utils/alert.dart';
 import 'package:fisc/utils/prefs.dart';
+import 'package:fisc/utils/utils.dart';
 import 'package:http/http.dart' as http;
 import 'package:device_id/device_id.dart';
 
 class LoginApi {
   static Future<ApiResponse<UsuarioResponse>> login(String login, String Senha) async {
+
     try{
       var url =
           'http://192.168.0.6:8082/sped-web/services/usuario/autenticacao';
@@ -41,5 +44,5 @@ class LoginApi {
       print("erro no login");
       return ApiResponse.error("Não foi possível fazer o login");
     }
-  }
+
 }
