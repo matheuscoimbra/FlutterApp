@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:fisc/page/acompanhamento/acompanhamento.dart';
+import 'package:fisc/page/acompanhamento/acompanhamento_form.dart';
 import 'package:fisc/page/login/login_page.dart';
 import 'package:fisc/page/login/user.dart';
 import 'package:fisc/utils/utils.dart';
@@ -51,7 +53,7 @@ class _SplashScreenState extends State<SplashScreen> {
       if(usuario!=null){
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home()));
       }else{
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AcompanhamentoForm()));
       }
     });
 

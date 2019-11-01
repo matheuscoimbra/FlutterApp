@@ -1,3 +1,4 @@
+import 'package:fisc/page/acompanhamento/acompanhamento_form.dart';
 import 'package:fisc/page/acompanhamento/acompanhamento_list.dart';
 import 'package:fisc/page/home/initial_page.dart';
 import 'package:fisc/page/login/login_page.dart';
@@ -50,7 +51,7 @@ class DrawerList extends StatelessWidget {
               trailing: Icon(Icons.arrow_forward),
               onTap: () {
                 print("carga");
-                push(context,AcompanhamentoList());
+                push(context,AcompanhamentoForm());
 
               },
             ),
