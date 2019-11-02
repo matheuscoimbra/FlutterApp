@@ -10,6 +10,10 @@ import 'package:intl/intl.dart';
 import 'acompanhamento.dart';
 
 class AcompanhamentoList extends StatefulWidget {
+  Map<String,dynamic> value;
+
+  AcompanhamentoList(this.value);
+
   @override
   _AcompanhamentoListState createState() => _AcompanhamentoListState();
 }
@@ -23,7 +27,7 @@ class _AcompanhamentoListState extends State<AcompanhamentoList> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _block.loaldData(context,null,null,null);
+    _block.loaldData(context,widget.value);
   }
 
   @override
@@ -35,7 +39,6 @@ class _AcompanhamentoListState extends State<AcompanhamentoList> {
         centerTitle: true,
       ),
       body: _body(),
-      drawer: DrawerList(),
     );
   }
 
@@ -58,7 +61,10 @@ class _AcompanhamentoListState extends State<AcompanhamentoList> {
         }
 
         Acompanhamento acompanhamento = snapshot.data;
-
+        return RefreshIndicator(
+          onRefresh: _onRefresh,
+          child: _listView(acompanhamento.hst),
+        );
       },
     ));
   }
@@ -70,7 +76,10 @@ class _AcompanhamentoListState extends State<AcompanhamentoList> {
     _block.dispose();
   }
 
-
+  Future<void> _onRefresh() async {
+    await _block.loaldData(context, widget.value);
+    return;
+  }
 
   Container _listView(Hst acompanhamento) {
     return Container(
@@ -142,7 +151,7 @@ class _AcompanhamentoListState extends State<AcompanhamentoList> {
             horizontal: size.getWidthPx(20), vertical: size.getWidthPx(16)),
         borderOnForeground: true,
         child: Container(
-          height: size.getWidthPx(150),
+          height: size.getWidthPx(166),
           child: Column(
             children: <Widget>[
               leftAlignText(

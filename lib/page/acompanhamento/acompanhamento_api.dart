@@ -10,19 +10,32 @@ import 'package:fisc/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:fisc/utils/http_helper.dart' as http2;
+import 'package:intl/intl.dart';
 
 import 'acompanhamento.dart';
+import 'categoria.dart';
 
 class AcompanhamentoApi {
-  static Future<Acompanhamento> getAcompanhamento(BuildContext context,int tipo, String dataIni, String dataFim) async {
+  static Future<Acompanhamento> getAcompanhamento(BuildContext context,Map<String,dynamic> value) async {
     final rotinas = List<Rotina>();
     User user =await User.get();
 
+   /* var usdKey = Categoria.keys.firstWhere(
+            (k) => Categoria[k] == value['gender'], orElse: () => null);*/
+
+    var usdKey = Categoria[value['gender']];
+    var ini = value['ini'];
+    ini = new DateFormat('yyyy-MM-dd','pt').format(ini);
+   var fim = value['fim'];
+    fim = new DateFormat('yyyy-MM-dd','pt').format(fim);
+    print(ini);
+    print(fim);
+
     var url =
-        'http://192.168.0.21:8082/sped-web/services/conteudo/consultar/carga?tipo=$tipo&dataInicial=$dataIni&dataFinal=$dataFim';
+        'http://192.168.0.21:8082/sped-web/services/conteudo/consultar/carga?tipo=$usdKey&dataInicial=$ini&dataFinal=$fim';
 
 
-
+    print("url $url");
     if (await Utils.checkConnection()) {
     var response = await http2.get(url);
 

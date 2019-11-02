@@ -10,9 +10,11 @@ class AcompanhamentoBloc{
 
   get stream => _streamControler.stream;
 
-  Future<Acompanhamento> loaldData(BuildContext context,int tipo, String dataIni, String dataFim) async{
+
+
+  Future<Acompanhamento> loaldData(BuildContext context, Map<String,dynamic> value) async{
     try {
-      Acompanhamento acompanhamento = await AcompanhamentoApi.getAcompanhamento(context, tipo,  dataIni,  dataFim);
+      Acompanhamento acompanhamento = await AcompanhamentoApi.getAcompanhamento(context, value);
       _streamControler.add(acompanhamento);
       return acompanhamento;
     }catch(e){
