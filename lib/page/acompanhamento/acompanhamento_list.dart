@@ -23,7 +23,7 @@ class _AcompanhamentoListState extends State<AcompanhamentoList> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _block.loaldData(context);
+    _block.loaldData(context,null,null,null);
   }
 
   @override
@@ -58,10 +58,7 @@ class _AcompanhamentoListState extends State<AcompanhamentoList> {
         }
 
         Acompanhamento acompanhamento = snapshot.data;
-        return RefreshIndicator(
-          onRefresh: _onRefresh,
-          child: _listView(acompanhamento.hst),
-        );
+
       },
     ));
   }
@@ -73,10 +70,7 @@ class _AcompanhamentoListState extends State<AcompanhamentoList> {
     _block.dispose();
   }
 
-  Future<void> _onRefresh() async {
-    await _block.loaldData(context);
-    return;
-  }
+
 
   Container _listView(Hst acompanhamento) {
     return Container(

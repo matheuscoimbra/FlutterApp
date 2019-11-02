@@ -1,4 +1,25 @@
-enum Categoria {
-  NENHUM,  NFE,  CTE,  MDFE,  NFCE,  EFD,  CTEOS,  DIEF,  GIA_ST,
-  CONV_115,  BPE,  PGDASD,  TEF,  DEFIS,  NFE_EVENTO,  CTE_EVENTO,
-  MDFE_EVENTO,  NFCE_EVENTO,  EFD_OIE,  SCANC,  DI,  CCC,  DESTDA  }
+final Categoria = {
+  '1':'NENHUM',
+  '2':'NFE',
+'3':'CTE',
+'4':'MDFE',
+'5':'NFCE',
+'6':'EFD',
+'7':'CTEOS',
+'8':'DIEF',
+'9':'GIA_ST',
+'10':'CONV_115',
+'11':'BPE',
+'12':'PGDASD',
+'13':'TEF',
+'14':'DEFIS',
+'15':'NFE_EVENTO',
+'16':'CTE_EVENTO',
+'17':'MDFE_EVENTO',
+'18':'NFCE_EVENTO',
+'19':'EFD_OIE',
+'20':'SCANC',
+'21':'DI',
+'22':'CCC',
+'24':'DESTDA'
+};

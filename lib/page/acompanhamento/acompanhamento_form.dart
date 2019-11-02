@@ -1,6 +1,7 @@
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:fisc/page/acompanhamento/categoria.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../drawer_list.dart';
@@ -38,12 +39,13 @@ class _AcompanhamentoFormState extends State<AcompanhamentoForm> {
       child: Center(
         child: DropdownButton<String>(
           value: _selected,
-          items: Categoria.values.map((f)=>f.toString()).map((String value) {
-            return new DropdownMenuItem<String>(
-              value: enumValueToString(enumValueFromString<Categoria>(value, Categoria.values)),
-              child: new Text(value),
-            );
-          }).toList(),
+          items: Categoria.entries
+              .map<DropdownMenuItem<String>>(
+                  (MapEntry<String, String> e) => DropdownMenuItem<String>(
+                value: e.key,
+                child: Text(e.value),
+              ))
+              .toList(),
           onChanged: (newValue) {
             setState(() {
               _selected = newValue;
