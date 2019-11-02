@@ -22,6 +22,7 @@ class _AcompanhamentoListState extends State<AcompanhamentoList> {
   Acompanhamento acompanhamento;
   final _block = AcompanhamentoBloc();
   Screen size;
+  bool _gridView = true;
 
   @override
   void initState() {
@@ -37,6 +38,24 @@ class _AcompanhamentoListState extends State<AcompanhamentoList> {
       appBar: AppBar(
         title: Text("Acompanhamento"),
         centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.list),
+            onPressed: (){
+              setState(() {
+                _gridView=false;
+              });
+            } ,
+          ),
+          IconButton(
+            icon: Icon(Icons.grid_on),
+            onPressed: (){
+              setState(() {
+                _gridView=true;
+              });
+            } ,
+          )
+        ],
       ),
       body: _body(),
     );
@@ -82,7 +101,25 @@ class _AcompanhamentoListState extends State<AcompanhamentoList> {
   }
 
   Container _listView(Hst acompanhamento) {
-    return Container(
+    return _gridView?Container(
+        padding: EdgeInsets.all(5.0),
+        child: GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+            itemCount: acompanhamento.historico != null
+                ? acompanhamento.historico.length
+                : 0,
+            itemBuilder: (context, int index) {
+
+              var key = acompanhamento.historico.keys.elementAt(index);
+
+              return Container(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[upperPart(key, key2:acompanhamento.historico)],
+                  ),
+                ),
+              );
+            })) :Container(
         padding: EdgeInsets.all(16),
         child: ListView.builder(
             itemCount: acompanhamento.historico != null
@@ -108,7 +145,7 @@ class _AcompanhamentoListState extends State<AcompanhamentoList> {
         ClipPath(
           clipper: UpperClipper(),
           child: Container(
-            height: size.getWidthPx(240),
+            height: _gridView? size.getWidthPx(140): size.getWidthPx(240),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [colorCurve, colorCurveSecondary],
@@ -138,7 +175,7 @@ class _AcompanhamentoListState extends State<AcompanhamentoList> {
     return Text( "${ new DateFormat('dd/MM/yyyy (EEEE)','pt').format(DateTime.parse(key))}",
         style: TextStyle(
             fontFamily: 'Exo2',
-            fontSize: 24.0,
+            fontSize: _gridView?14.0:24.0,
             fontWeight: FontWeight.w900,
             color: Colors.white));
   }
@@ -151,20 +188,20 @@ class _AcompanhamentoListState extends State<AcompanhamentoList> {
             horizontal: size.getWidthPx(20), vertical: size.getWidthPx(16)),
         borderOnForeground: true,
         child: Container(
-          height: size.getWidthPx(166),
+          height: _gridView?size.getWidthPx(95):size.getWidthPx(166),
           child: Column(
             children: <Widget>[
               leftAlignText(
                   text: "Resultados :",
                   leftPadding: size.getWidthPx(16),
                   textColor: textPrimaryColor,
-                  fontSize: 16.0),
+                  fontSize:  _gridView?8.0:16.0),
               Container(
                 color: key2[key][0].estilo=="com_erro"?Colors.redAccent:Colors.greenAccent,
                 child: CenterAlignText(
                     text: "${key2[key][0].nome}",
                     textColor: textPrimaryColor,
-                    fontSize: 16.0),
+                    fontSize: _gridView?8.0:16.0),
               ),
 
 
@@ -175,7 +212,7 @@ class _AcompanhamentoListState extends State<AcompanhamentoList> {
               CenterAlignText(
                   text: "${key2[key][0].descricao}",
                   textColor: textPrimaryColor,
-                  fontSize: 16.0),
+                  fontSize: _gridView?8.0:16.0),
 
               Divider(
                 color: Colors.black,
@@ -186,7 +223,7 @@ class _AcompanhamentoListState extends State<AcompanhamentoList> {
                 child: CenterAlignText(
                     text: "${key2[key][1].nome}",
                     textColor: textPrimaryColor,
-                    fontSize: 16.0),
+                    fontSize: _gridView?8.0:16.0),
               ),
 
               SizedBox(
@@ -195,7 +232,7 @@ class _AcompanhamentoListState extends State<AcompanhamentoList> {
               CenterAlignText(
                   text: "${key2[key][1].descricao}",
                   textColor: textPrimaryColor,
-                  fontSize: 16.0),
+                  fontSize: _gridView?8.0:16.0),
 
 
 

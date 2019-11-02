@@ -1,3 +1,51 @@
+class AtrasoProcessaomento {
+  List<ListaSeries> listaSeries;
+
+  AtrasoProcessaomento({this.listaSeries});
+
+  AtrasoProcessaomento.fromJson(Map<String, dynamic> json) {
+    if (json['listaSeries'] != null) {
+      listaSeries = new List<ListaSeries>();
+      json['listaSeries'].forEach((v) {
+        listaSeries.add(new ListaSeries.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.listaSeries != null) {
+      data['listaSeries'] = this.listaSeries.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class ListaSeries {
+  String name;
+  int y;
+
+  ListaSeries({this.name, this.y});
+
+  ListaSeries.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    y = json['y'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['y'] = this.y;
+    return data;
+  }
+}
+
+
+
+
+
+
+
 class Acompanhamento {
   Hst hst;
   Carga carga;
