@@ -23,7 +23,7 @@ class AtrasoProcessaomento {
 
 class ListaSeries {
   String name;
-  int y;
+  double y;
 
   ListaSeries({this.name, this.y});
 

@@ -1,6 +1,8 @@
 import 'package:fisc/drawer_list.dart';
 import 'package:fisc/main.dart';
 import 'package:fisc/page/acompanhamento/acompanhamento_block.dart';
+import 'package:fisc/page/acompanhamento/acompanhamento_chart.dart';
+import 'package:fisc/utils/nav.dart';
 import 'package:fisc/utils/utils.dart';
 import 'package:fisc/widgets/utils_widget.dart';
 import 'package:fisc/widgets/widgets.dart';
@@ -22,19 +24,25 @@ class _AcompanhamentoListState extends State<AcompanhamentoList> {
   Acompanhamento acompanhamento;
   final _block = AcompanhamentoBloc();
   Screen size;
-  bool _gridView = true;
+  bool _gridView = false;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _block.loaldData(context,widget.value);
+    _block.loaldData(context,widget.value,1);
   }
 
   @override
   Widget build(BuildContext context) {
     size = Screen(MediaQuery.of(context).size);
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          push(context,AcompanhamentoChart(widget.value));
+        },
+        child: Icon(Icons.pie_chart_outlined),
+      ),
       appBar: AppBar(
         title: Text("Acompanhamento"),
         centerTitle: true,
@@ -96,7 +104,7 @@ class _AcompanhamentoListState extends State<AcompanhamentoList> {
   }
 
   Future<void> _onRefresh() async {
-    await _block.loaldData(context, widget.value);
+    await _block.loaldData(context, widget.value,1);
     return;
   }
 
