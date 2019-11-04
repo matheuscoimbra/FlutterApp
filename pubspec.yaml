@@ -38,6 +38,7 @@ dependencies:
   enum_to_string: ^1.0.7+1
   flutter_form_builder: ^3.5.3
   charts_flutter: ^0.8.1
+  bidirectional_scroll_view: ^0.1.1
 
   #Firebase
   flutter_auth_buttons: ^0.5.0

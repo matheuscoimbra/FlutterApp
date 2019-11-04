@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:bidirectional_scroll_view/bidirectional_scroll_view.dart';
 import 'package:fisc/drawer_list.dart';
 import 'package:fisc/main.dart';
 import 'package:fisc/page/acompanhamento/acompanhamento_block.dart';
@@ -110,47 +111,59 @@ class _AcompanhamentoChartState extends State<AcompanhamentoChart> {
     listaSeries = taskdata.listaSeries;
     _generateData(listaSeries);
     return  Padding(
-      padding: EdgeInsets.all(8.0),
-      child: Container(
-        child: Center(
-          child: Column(
-            children: <Widget>[
-              Text(
-                'Atrasos',
-                style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
-              Expanded(
-                child: charts.PieChart(_seriesPieData,
-                    animate: true,
-                    animationDuration: Duration(seconds: 2),
-                    behaviors: [
-                      new charts.DatumLegend(
-                        outsideJustification:
-                        charts.OutsideJustification.endDrawArea,
-                        horizontalFirst: false,
-                        desiredMaxRows: 5,
-                        cellPadding:
-                        new EdgeInsets.only(right: 4.0, bottom: 4.0,top:4.0),
-                        entryTextStyle: charts.TextStyleSpec(
-                            color: charts.MaterialPalette.purple.shadeDefault,
-                            fontFamily: 'Georgia',
-                            fontSize: 18),
-                      )
-                    ],
-                    defaultRenderer: new charts.ArcRendererConfig(
-                        arcWidth: 100,
-                        arcRendererDecorators: [
-                          new charts.ArcLabelDecorator(
-                              labelPosition: charts.ArcLabelPosition.inside)
-                        ])),
-              ),
-            ],
+      padding: EdgeInsets.all(16.0),
+       child: Container(
+         padding: EdgeInsets.all(36.0),
+
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+
+                Text(
+                  'Atrasos',
+                  style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
+                Expanded(
+                  child: charts.PieChart(_seriesPieData,
+                      animate: true,
+                      animationDuration: Duration(seconds: 2),
+
+                      behaviors: [
+                        new charts.DatumLegend(
+                          outsideJustification:
+                          charts.OutsideJustification.middleDrawArea,
+                          horizontalFirst: false,
+                          desiredMaxRows: 5,
+                          cellPadding:
+                          new EdgeInsets.only(right: 4.0, bottom: 4.0,top:4.0),
+                          entryTextStyle: charts.TextStyleSpec(
+                              color: charts.MaterialPalette.purple.shadeDefault,
+                              fontFamily: 'Georgia',
+                              fontSize: 18),
+                        )
+                      ],
+                      defaultRenderer: new charts.ArcRendererConfig(
+                          arcWidth: 60,
+                          strokeWidthPx: 0,
+                          arcRendererDecorators: [
+
+                            new charts.ArcLabelDecorator( insideLabelStyleSpec: new charts.TextStyleSpec(fontSize:12),
+                                showLeaderLines: false,
+                                labelPadding: 5 ,
+                                outsideLabelStyleSpec:  new charts.TextStyleSpec(fontSize:11),
+                                labelPosition: charts.ArcLabelPosition.auto),
+                          ])),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
+
     );
 
 
