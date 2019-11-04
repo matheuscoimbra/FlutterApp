@@ -92,6 +92,7 @@ class _AcompanhamentoFormState extends State<AcompanhamentoForm> {
                       format: DateFormat("dd/MM/yyyy"),
                       decoration:
                       InputDecoration(labelText: "Data Inicial"),
+                      validators: [FormBuilderValidators.required(errorText: "Informe a data Inicial")],
                     ),
                     SizedBox(
                       height: 30.0,
@@ -102,6 +103,8 @@ class _AcompanhamentoFormState extends State<AcompanhamentoForm> {
                       format: DateFormat("dd/MM/yyyy"),
                       decoration:
                       InputDecoration(labelText: "Data Final"),
+                      validators: [FormBuilderValidators.required(errorText: "Informe a data Final")],
+
                     ),
                     SizedBox(
                       height: 20.0,
@@ -148,16 +151,18 @@ class _AcompanhamentoFormState extends State<AcompanhamentoForm> {
                     onPressed: () {
                       if (_fbKey.currentState.saveAndValidate()) {
                         print(_fbKey.currentState.value);
-                        var ini = _fbKey.currentState.value['ini'];
-                        ini = new DateFormat('yyyy-MM-dd','pt').format(ini);
-                        var fim = _fbKey.currentState.value['fim'];
-                        fim = new DateFormat('yyyy-MM-dd','pt').format(fim);
 
+                        var ini = _fbKey.currentState.value['ini'];
+                        var fim = _fbKey.currentState.value['fim'];
+
+                        fim = new DateFormat('yyyy-MM-dd','pt').format(fim);
+                        ini = new DateFormat('yyyy-MM-dd','pt').format(ini);
                         var start = DateTime.parse(ini);
                         var end = DateTime.parse(fim);
                         Duration difference = end.difference(start);
-                        print(difference.inDays);
-                        if(difference.inDays>30){
+                        if(start.isAfter(end)){
+                          alert(context,"Data Inicial não pode ser maior que data final.");
+                        }else if(difference.inDays>30){
                           alert(context,"Data não pode ter diferença maior do que 30 dias");
                         }else{
                           push(context,AcompanhamentoList(_fbKey.currentState.value));
