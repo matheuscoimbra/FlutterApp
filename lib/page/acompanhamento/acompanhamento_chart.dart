@@ -115,7 +115,7 @@ class _AcompanhamentoChartState extends State<AcompanhamentoChart> {
     return  Padding(
       padding: EdgeInsets.all(16.0),
        child: Container(
-         padding: EdgeInsets.all(36.0),
+         padding: EdgeInsets.all(16.0),
 
           child: Center(
             child: Column(
@@ -154,11 +154,11 @@ class _AcompanhamentoChartState extends State<AcompanhamentoChart> {
                         defaultRenderer: new charts.ArcRendererConfig(
                             arcWidth: 60,
                             strokeWidthPx: troke,
-
+                            startAngle:  9 / 7 * pi,
                             arcRendererDecorators: [
 
                               new charts.ArcLabelDecorator( insideLabelStyleSpec: new charts.TextStyleSpec(fontSize:12),
-                                  showLeaderLines: false,
+                                  showLeaderLines: true,
                                   labelPadding: 5 ,
                                   outsideLabelStyleSpec:  new charts.TextStyleSpec(fontSize:11),
                                   labelPosition: charts.ArcLabelPosition.auto),
