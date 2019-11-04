@@ -125,7 +125,7 @@ class _AcompanhamentoChartState extends State<AcompanhamentoChart> {
               Expanded(
                 child: charts.PieChart(_seriesPieData,
                     animate: true,
-                    animationDuration: Duration(seconds: 5),
+                    animationDuration: Duration(seconds: 2),
                     behaviors: [
                       new charts.DatumLegend(
                         outsideJustification:

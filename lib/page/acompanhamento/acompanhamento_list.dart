@@ -112,6 +112,7 @@ class _AcompanhamentoListState extends State<AcompanhamentoList> {
     return _gridView?Container(
         padding: EdgeInsets.all(5.0),
         child: GridView.builder(
+
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
             itemCount: acompanhamento.historico != null
                 ? acompanhamento.historico.length
@@ -121,11 +122,9 @@ class _AcompanhamentoListState extends State<AcompanhamentoList> {
               var key = acompanhamento.historico.keys.elementAt(index);
 
               return Container(
-                child: SingleChildScrollView(
                   child: Column(
                     children: <Widget>[upperPart(key, key2:acompanhamento.historico)],
                   ),
-                ),
               );
             })) :Container(
         padding: EdgeInsets.all(16),
@@ -153,7 +152,7 @@ class _AcompanhamentoListState extends State<AcompanhamentoList> {
         ClipPath(
           clipper: UpperClipper(),
           child: Container(
-            height: _gridView? size.getWidthPx(140): size.getWidthPx(240),
+            height: _gridView? size.getWidthPx(147): size.getWidthPx(240),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [colorCurve, colorCurveSecondary],
@@ -164,7 +163,7 @@ class _AcompanhamentoListState extends State<AcompanhamentoList> {
         Column(
           children: <Widget>[
             Container(
-              padding: EdgeInsets.only(top: size.getWidthPx(36)),
+              padding: EdgeInsets.only(top: size.getWidthPx(16)),
               child: Column(
                 children: <Widget>[
                   titleWidget(key),
@@ -193,10 +192,10 @@ class _AcompanhamentoListState extends State<AcompanhamentoList> {
         elevation: 4.0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         margin: EdgeInsets.symmetric(
-            horizontal: size.getWidthPx(20), vertical: size.getWidthPx(16)),
+            horizontal: size.getWidthPx(10), vertical: size.getWidthPx(16)),
         borderOnForeground: true,
         child: Container(
-          height: _gridView?size.getWidthPx(95):size.getWidthPx(166),
+          height: _gridView?size.getWidthPx(97):size.getWidthPx(166),
           child: Column(
             children: <Widget>[
               leftAlignText(

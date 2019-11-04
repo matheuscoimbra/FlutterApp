@@ -32,7 +32,7 @@ class AtrasoProcessaomentoApiChart {
     print(fim);
 
     var url =
-        'http://192.168.0.21:8082/sped-web/services/conteudo/consultar/atraso/processamento?tipo=$usdKey&dataInicial=$ini&dataFinal=$fim';
+        'http://192.168.43.15:8082/sped-web/services/conteudo/consultar/atraso/processamento?tipo=$usdKey&dataInicial=$ini&dataFinal=$fim';
 
 
     print("url $url");
