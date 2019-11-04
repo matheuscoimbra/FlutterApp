@@ -26,6 +26,7 @@ class _AcompanhamentoChartState extends State<AcompanhamentoChart> {
   final _block = AcompanhamentoBloc();
   Screen size;
   bool _gridView = true;
+  double troke = 0;
   List<charts.Series<ListaSeries, String>> _seriesPieData;
   _generateData(mydata) {
     _seriesPieData = List<charts.Series<ListaSeries, String>>();
@@ -110,6 +111,7 @@ class _AcompanhamentoChartState extends State<AcompanhamentoChart> {
   Widget _buildChart(BuildContext context, AtrasoProcessaomento taskdata) {
     listaSeries = taskdata.listaSeries;
     _generateData(listaSeries);
+    var _troke = 0.0;
     return  Padding(
       padding: EdgeInsets.all(16.0),
        child: Container(
@@ -129,35 +131,39 @@ class _AcompanhamentoChartState extends State<AcompanhamentoChart> {
                   height: 10.0,
                 ),
                 Expanded(
-                  child: charts.PieChart(_seriesPieData,
-                      animate: true,
-                      animationDuration: Duration(seconds: 2),
+                  child: GestureDetector(
+                    onDoubleTap: () => _change(),
+                    child: charts.PieChart(_seriesPieData,
+                        animate: true,
+                        animationDuration: Duration(seconds: 2),
 
-                      behaviors: [
-                        new charts.DatumLegend(
-                          outsideJustification:
-                          charts.OutsideJustification.middleDrawArea,
-                          horizontalFirst: false,
-                          desiredMaxRows: 5,
-                          cellPadding:
-                          new EdgeInsets.only(right: 4.0, bottom: 4.0,top:4.0),
-                          entryTextStyle: charts.TextStyleSpec(
-                              color: charts.MaterialPalette.purple.shadeDefault,
-                              fontFamily: 'Georgia',
-                              fontSize: 18),
-                        )
-                      ],
-                      defaultRenderer: new charts.ArcRendererConfig(
-                          arcWidth: 60,
-                          strokeWidthPx: 0,
-                          arcRendererDecorators: [
+                        behaviors: [
+                          new charts.DatumLegend(
+                            outsideJustification:
+                            charts.OutsideJustification.middleDrawArea,
+                            horizontalFirst: false,
+                            desiredMaxRows: 5,
+                            cellPadding:
+                            new EdgeInsets.only(right: 4.0, bottom: 4.0,top:4.0),
+                            entryTextStyle: charts.TextStyleSpec(
+                                color: charts.MaterialPalette.purple.shadeDefault,
+                                fontFamily: 'Georgia',
+                                fontSize: 18),
+                          )
+                        ],
+                        defaultRenderer: new charts.ArcRendererConfig(
+                            arcWidth: 60,
+                            strokeWidthPx: troke,
 
-                            new charts.ArcLabelDecorator( insideLabelStyleSpec: new charts.TextStyleSpec(fontSize:12),
-                                showLeaderLines: false,
-                                labelPadding: 5 ,
-                                outsideLabelStyleSpec:  new charts.TextStyleSpec(fontSize:11),
-                                labelPosition: charts.ArcLabelPosition.auto),
-                          ])),
+                            arcRendererDecorators: [
+
+                              new charts.ArcLabelDecorator( insideLabelStyleSpec: new charts.TextStyleSpec(fontSize:12),
+                                  showLeaderLines: false,
+                                  labelPadding: 5 ,
+                                  outsideLabelStyleSpec:  new charts.TextStyleSpec(fontSize:11),
+                                  labelPosition: charts.ArcLabelPosition.auto),
+                            ])),
+                  )
                 ),
               ],
             ),
@@ -170,6 +176,16 @@ class _AcompanhamentoChartState extends State<AcompanhamentoChart> {
 
 
 
+  }
+
+  _change() {
+    setState(() {
+      if(troke==5.0){
+        troke=0.0;
+      }else{
+        troke=5.0;
+      }
+    });
   }
 
 }
