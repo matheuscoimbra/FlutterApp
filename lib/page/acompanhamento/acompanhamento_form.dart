@@ -1,13 +1,14 @@
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:fisc/page/acompanhamento/acompanhamento_list.dart';
 import 'package:fisc/page/acompanhamento/categoria.dart';
+import 'package:fisc/utils/alert.dart';
 import 'package:fisc/utils/nav.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-
+import 'dart:math' as math;
 import '../../drawer_list.dart';
 
 class AcompanhamentoForm extends StatefulWidget {
@@ -45,6 +46,32 @@ class _AcompanhamentoFormState extends State<AcompanhamentoForm> {
           child: ListView(
 
             children: <Widget>[
+             Container(
+               height: 200,
+            child:  Card(
+              color: Colors.cyan,
+              child: Center(
+                child: Column(
+                  children: <Widget>[
+                    Text("Monitoramento de Contéudo", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: Colors.white),),
+                    ListTile(
+                      leading: Icon(Icons.calendar_today),
+                      title: Text("Visualização por data",style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+                      subtitle: Text("Situação da Carga / Processamento ",style: TextStyle( color: Colors.white)),
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.pie_chart),
+                      title: Text("Visualização por processamento",style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+                      subtitle: Text("Atraso /Avaliação do Tempo de Processamento",style: TextStyle( color: Colors.white)),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+              SizedBox(
+                height: 30.0,
+              ),
               FormBuilder(
                 key: _fbKey,
                 initialValue: {
@@ -54,12 +81,18 @@ class _AcompanhamentoFormState extends State<AcompanhamentoForm> {
                 autovalidate: true,
                 child: Column(
                   children: <Widget>[
+                    SizedBox(
+                      height: 30.0,
+                    ),
                     FormBuilderDateTimePicker(
                       attribute: "ini",
                       inputType: InputType.date,
                       format: DateFormat("dd/MM/yyyy"),
                       decoration:
                       InputDecoration(labelText: "Data Inicial"),
+                    ),
+                    SizedBox(
+                      height: 30.0,
                     ),
                     FormBuilderDateTimePicker(
                       attribute: "fim",
@@ -83,7 +116,7 @@ class _AcompanhamentoFormState extends State<AcompanhamentoForm> {
                       icon: Icon(
                         Icons.arrow_downward
                       ),
-                      validators: [FormBuilderValidators.required()],
+                      validators: [FormBuilderValidators.required(errorText: "Escolha uma categoria")],
                       items: ['NFE',  'CTE',  'MDFE',  'NFCE',  'EFD',  'CTEOS',  'DIEF',  'GIA_ST',  'CONV_115',  'BPE',  'PGDASD',  'TEF',  'DEFIS',  'NFE_EVENTO',  'CTE_EVENTO',  'MDFE_EVENTO',  'NFCE_EVENTO',  'EFD_OIE',  'SCANC',  'DI',  'CCC',  'DESTDA']
                           .map((gender) => DropdownMenuItem(
                           value: gender,
@@ -95,23 +128,60 @@ class _AcompanhamentoFormState extends State<AcompanhamentoForm> {
                   ],
                 ),
               ),
+              SizedBox(
+                height: 120.0,
+              ),
               Row(
                 children: <Widget>[
+                
+
                   MaterialButton(
-                    child: Text("Submit"),
+                    minWidth: 100.0,
+                    height: 35,
+                    color: Colors.cyan,
+                    shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(22.0) ),
+                    child: Text("Pesquisar", style: TextStyle( color: Colors.white),),
+                    elevation: 18.0,
+                    clipBehavior:  Clip.antiAlias,
                     onPressed: () {
                       if (_fbKey.currentState.saveAndValidate()) {
                         print(_fbKey.currentState.value);
-                        push(context,AcompanhamentoList(_fbKey.currentState.value));
+                        var ini = _fbKey.currentState.value['ini'];
+                        ini = new DateFormat('yyyy-MM-dd','pt').format(ini);
+                        var fim = _fbKey.currentState.value['fim'];
+                        fim = new DateFormat('yyyy-MM-dd','pt').format(fim);
+
+                        var start = DateTime.parse(ini);
+                        var end = DateTime.parse(fim);
+                        Duration difference = end.difference(start);
+                        print(difference.inDays);
+                        if(difference.inDays>30){
+                          alert(context,"Data não pode ter diferença maior do que 30 dias");
+                        }else{
+                          push(context,AcompanhamentoList(_fbKey.currentState.value));
+
+                        }
+
                       }
                     },
                   ),
+                  SizedBox(
+                    width: 30.0,
+                  ),
                   MaterialButton(
-                    child: Text("Reset"),
+
+                    child: Text("Limpar",style: TextStyle( color: Colors.white)),
+                    elevation: 18.0,
+                    minWidth: 100.0,
+                    height: 35,
+                    color: Colors.cyan,
+                    shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(22.0) ),
+                    clipBehavior:  Clip.antiAlias,
                     onPressed: () {
                       _fbKey.currentState.reset();
                     },
                   ),
+
                 ],
               )
             ],
