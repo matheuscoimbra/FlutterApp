@@ -48,11 +48,13 @@ class _AcompanhamentoFormState extends State<AcompanhamentoForm> {
             children: <Widget>[
              Container(
                height: 200,
+
             child:  Card(
               color: Colors.cyan,
               child: Center(
                 child: Column(
                   children: <Widget>[
+                    SizedBox(height: 16.0,),
                     Text("Monitoramento de Contéudo", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: Colors.white),),
                     ListTile(
                       leading: Icon(Icons.calendar_today),
@@ -133,7 +135,7 @@ class _AcompanhamentoFormState extends State<AcompanhamentoForm> {
               ),
               Row(
                 children: <Widget>[
-                
+
 
                   MaterialButton(
                     minWidth: 100.0,
