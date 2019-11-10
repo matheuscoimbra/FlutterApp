@@ -15,6 +15,8 @@ import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:flutter/services.dart';
 
+import 'login_bloc.dart';
+
 
 
 
@@ -35,6 +37,7 @@ class _LoginPageState extends State<LoginPage> {
   final _focusSenha = FocusNode();
 
   final _formKey = GlobalKey<FormState>();
+  final _bloc = LoginBloc();
 
 
   final LocalAuthentication _localAuth = LocalAuthentication();
@@ -153,14 +156,15 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 StreamBuilder<bool>(
-                  stream: _streamControler.stream,
+                  stream:_bloc.progress.stream,
+                  initialData: false,
                   builder: (context,snapshot){
                     return  Padding(
                       padding: EdgeInsets.only(top: 20),
                       child: MaterialButton(
                         onPressed: _onClickLogin,//
                         // since this is only a UI app
-                        child:snapshot.data!=null? Center(
+                        child:snapshot.data? Center(
                           child: CircularProgressIndicator(
                             valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                           ),
@@ -209,7 +213,7 @@ class _LoginPageState extends State<LoginPage> {
 
    _streamControler.add(true);
 
-    ApiResponse response = await LoginApi.login(login, senha);
+    ApiResponse response = await await _bloc.login(login, senha);
 
     if(response.ok){
       UsuarioResponse user = response.result;
@@ -233,10 +237,10 @@ class _LoginPageState extends State<LoginPage> {
       return null;
     }
 
-    @override
+  @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
-    _streamControler.close();
+
+    _bloc.dispose();
   }
 }

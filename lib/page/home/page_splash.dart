@@ -53,7 +53,7 @@ class _SplashScreenState extends State<SplashScreen> {
       if(usuario!=null){
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home()));
       }else{
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AcompanhamentoForm()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
       }
     });
 
