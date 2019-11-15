@@ -19,7 +19,7 @@ class RotinaApiAtivar {
 
     User user =await User.get();
     var url =
-        'http://192.168.0.21:8082/sped-web/services/rotina/$ativarPara/$idTipoConteudo/$tipo';
+        'https://sistemas1.sefaz.ma.gov.br/gfis/services/rotina/$ativarPara/$idTipoConteudo/$tipo';
     print("url -> ${url}");
     Map<String, String> headers = {
       "Content-Type": "application/json",
@@ -34,6 +34,8 @@ class RotinaApiAtivar {
 
 
     if(response.statusCode==200){
+
+      await Future.delayed(Duration(seconds: 4));
       EventBus.get(context).sendEvent(RotinaEvent(tipoRotina));
 
     }
@@ -49,9 +51,10 @@ class RotinaApiAtivar {
     }
     if(response.statusCode==500){
 
-      alert(context,"Erro inesperado!");
-      alertHome(context);
-      return "error";
+     // alert(context,"Erro inesperado!");
+      //alertHome(context);
+      print("{\"message\":\"Error Inesperado\"}");
+      return "{\"message\":\"Error Inesperado\"}";
     }
 
     String result =  response.body;

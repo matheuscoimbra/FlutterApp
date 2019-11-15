@@ -8,13 +8,15 @@ import 'package:fisc/page/rotina/rotina_api_ativar.dart';
 import 'package:fisc/page/rotina/rotina_block.dart';
 import 'package:fisc/page/rotina/rotina_detalhe.dart';
 import 'package:fisc/utils/alert.dart';
+import 'package:fisc/utils/alert_progress.dart';
 import 'package:fisc/utils/event_bus.dart';
 import 'package:fisc/utils/nav.dart';
 import 'package:fisc/widgets/icon_widget.dart';
+import 'package:fisc/widgets/progress_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
+import 'package:progress_dialog/progress_dialog.dart';
 import '../../main.dart';
 
 class RotinasListView extends StatefulWidget {
@@ -28,7 +30,7 @@ class RotinasListView extends StatefulWidget {
 
 class _RotinasListViewState extends State<RotinasListView> with AutomaticKeepAliveClientMixin<RotinasListView> {
   List<Rotina> rotinas;
-
+  ProgressDialog pr;
   StreamSubscription<Event> subscription;
   final _block = RotinaBloc();
   bool showProgress = false;
@@ -40,7 +42,9 @@ class _RotinasListViewState extends State<RotinasListView> with AutomaticKeepAli
 
     _block.loaldData(widget._tipoRotina, context);
 
+    pr = new ProgressDialog(context,type: ProgressDialogType.Normal);
 
+    pr.style(message: 'Aguarde....');
     // Escutando uma stream
     final bus = EventBus.get(context);
     subscription = bus.stream.listen((Event e){
@@ -63,6 +67,9 @@ class _RotinasListViewState extends State<RotinasListView> with AutomaticKeepAli
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    pr = new ProgressDialog(context,type: ProgressDialogType.Normal);
+
+    pr.style(message: 'Aguarde....');
     return _body();
   }
 
@@ -179,28 +186,38 @@ class _RotinasListViewState extends State<RotinasListView> with AutomaticKeepAli
                     height: 0,// ake buttons use the appropriate styles for cards
                     child: ButtonBar(
                       children: <Widget>[
-                        FlatButton(
-                          child: showProgress? Center(
-                            child: CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                            ),
-                          ):  Text('Ativar',style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-                          onPressed: ()
+                        showProgress? Center(
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                          ),
+                        ):FlatButton(
+                          child:   Text('Ativar',style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                          onPressed: () {
+                            print("Botão de ativar pressionado!");
+                            pr.show();
+                            Future.delayed(Duration(seconds: 3), () {
+                              pr.update(message: 'Quase lá...');
+                            });
 
-                          {
-                            setState(() {
-                              showProgress=true;
-                              print(showProgress);
-                            });
-                            RotinaApiAtivar.ativar("ativar",r.tipoConteudo.idTipoConteudo,r.tipoProcessamento,context,widget._tipoRotina).then(
-                                  (res)=> {alert(context,jsonDecode(res)["message"]),
-                                super.reassemble()}
-                          );
-                            setState(() {
-                              showProgress=false;
-                            });
-                          },
-                        )
+                            RotinaApiAtivar.ativar(
+                                "ativar", r.tipoConteudo.idTipoConteudo,
+                                r.tipoProcessamento, context,
+                                widget._tipoRotina).then(
+                                    (res)=> {
+
+                                    pr.update(message: jsonDecode(res)["message"], messageTextStyle: TextStyle(color: Colors.black,fontSize: 16, fontWeight: FontWeight.bold)) ,
+                                    Future.delayed(Duration(seconds: 1), () {
+                                      if(pr.isShowing()){
+                                        pr.hide();
+                                      }
+                                    }),
+
+                                  //alert(context,jsonDecode(res)["message"]),
+                                  super.reassemble()
+                                }
+                            );
+                            pr.update(message: 'Aguade...');
+                          })
 
                       ],
                     ),
@@ -327,24 +344,59 @@ class _RotinasListViewState extends State<RotinasListView> with AutomaticKeepAli
                         SizedBox(
                           width: 25,
                         ),
-                       (r.statusProcessamentoLabel.contains("PARADO") || r.statusProcessamentoLabel.contains("EM PARALISAÇÃO") || r.statusProcessamentoLabel.contains("CONCLUIDO (aguard próx execução...)"))?
+                        showProgress? Center(
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                          ),
+                        ):
+                       (r.statusProcessamentoLabel.contains("PARADO") || r.statusProcessamentoLabel.contains("EM PARALISAÇÃO") || r.statusProcessamentoLabel.contains("CONCLUIDO (aguard próx execução...)")) ?
                         FlatButton(
-                          child: const Text('Ativar',style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-                          onPressed: () { RotinaApiAtivar.ativar("ativar",r.tipoConteudo.idTipoConteudo,r.tipoProcessamento,context,widget._tipoRotina).then(
-                                  (res)=> {alert(context,jsonDecode(res)["message"]),
-                             super.reassemble()}
+                          child:  Text('Ativar',style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                          onPressed: () {
+                            pr.show();
+                            Future.delayed(Duration(seconds: 3), () {
+                              pr.update(message: 'Quase lá...');
+                            });
+                            RotinaApiAtivar.ativar("ativar",r.tipoConteudo.idTipoConteudo,r.tipoProcessamento,context,widget._tipoRotina).then(
+                                    (res)=> {
+
+                                      pr.update(message: jsonDecode(res)["message"], messageTextStyle: TextStyle(color: Colors.black,fontSize: 16, fontWeight: FontWeight.bold)) ,
+                                  Future.delayed(Duration(seconds: 1), () {
+                                    if(pr.isShowing()){
+                                      pr.hide();
+                                    }
+                                  }),
+
+                                  //alert(context,jsonDecode(res)["message"]),
+                                  super.reassemble()
+                                }
                           );
+                            pr.update(message: 'Aguade...');
                             /*super.didUpdateWidget(RotinasListView(widget._tipoRotina));*/
                           },
                         ):FlatButton(
                           child: const Text('Parar',style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-                          onPressed: () { RotinaApiAtivar.ativar("parar",r.tipoConteudo.idTipoConteudo,r.tipoProcessamento,context,widget._tipoRotina).then(
-                                  (res)=> {
+                          onPressed: () {
+                            pr.show();
+                            Future.delayed(Duration(seconds: 3), () {
+                              pr.update(message: 'Quase lá...');
+                            });
+                            ProgressWidget(false,false);
+                            RotinaApiAtivar.ativar("parar",r.tipoConteudo.idTipoConteudo,r.tipoProcessamento,context,widget._tipoRotina).then(
+                                    (res)=> {
 
-                                alert(context,jsonDecode(res)["message"]),
-                                super.reassemble()
-                              }
+                                      pr.update(message: jsonDecode(res)["message"], messageTextStyle: TextStyle(color: Colors.black,fontSize: 16, fontWeight: FontWeight.bold)) ,
+                                  Future.delayed(Duration(seconds: 1), () {
+                                    if(pr.isShowing()){
+                                      pr.hide();
+                                    }
+                                  }),
+
+                                  //alert(context,jsonDecode(res)["message"]),
+                                  super.reassemble()
+                                }
                           );
+                            pr.update(message: 'Aguade...');
                             /*super.didUpdateWidget(RotinasListView(widget._tipoRotina));*/
                           },
                         ),

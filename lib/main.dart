@@ -6,7 +6,10 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
 
+import 'utils/service_locator.dart';
+
 void main(){
+  setupLocator();
 
   runApp(MyApp());
 }

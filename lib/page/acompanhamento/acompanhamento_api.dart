@@ -32,7 +32,7 @@ class AcompanhamentoApi {
     print(fim);
 
     var url =
-        'http://192.168.0.21:8082/sped-web/services/conteudo/consultar/carga?tipo=$usdKey&dataInicial=$ini&dataFinal=$fim';
+        'https://sistemas1.sefaz.ma.gov.br/gfis/services/conteudo/consultar/carga?tipo=$usdKey&dataInicial=$ini&dataFinal=$fim';
 
 
     print("url $url");
