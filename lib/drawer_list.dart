@@ -1,3 +1,4 @@
+import 'package:fisc/page/about/home_about.dart';
 import 'package:fisc/page/acompanhamento/acompanhamento_form.dart';
 import 'package:fisc/page/acompanhamento/acompanhamento_list.dart';
 import 'package:fisc/page/home/initial_page.dart';
@@ -62,7 +63,7 @@ class DrawerList extends StatelessWidget {
               trailing: Icon(Icons.arrow_forward),
               onTap: () {
                 print("Item 1");
-                Navigator.pop(context);
+                push(context,HomeBout());
               },
             ),
             ListTile(

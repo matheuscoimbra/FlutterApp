@@ -1,5 +1,7 @@
 
 
+import 'package:fisc/page/rotina/home_page.dart';
+import 'package:fisc/widgets/home.dart';
 import 'package:flutter/material.dart';
 
 import '../../drawer_list.dart';
@@ -38,16 +40,6 @@ class _HomeState extends State<Home> {
   }
 
   _body() {
-    return Container(
-      padding: EdgeInsets.all(10.0),
-      child: SingleChildScrollView(
-        child: new Table(
-          children: [
-            new TableRow(
-              children: [
-                Text("Bem - vindo")
-              ]
-            )
-    ])));
+    return Inicio();
   }
 }

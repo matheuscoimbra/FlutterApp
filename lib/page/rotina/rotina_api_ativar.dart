@@ -19,7 +19,7 @@ class RotinaApiAtivar {
 
     User user =await User.get();
     var url =
-        'https://sistemas1.sefaz.ma.gov.br/gfis/services/rotina/$ativarPara/$idTipoConteudo/$tipo';
+        '/rotina/$ativarPara/$idTipoConteudo/$tipo';
     print("url -> ${url}");
     Map<String, String> headers = {
       "Content-Type": "application/json",

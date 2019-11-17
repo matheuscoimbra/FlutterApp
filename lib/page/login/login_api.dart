@@ -13,7 +13,7 @@ class LoginApi {
 
     try{
       var url =
-          'https://sistemas1.sefaz.ma.gov.br/gfis/services/usuario/autenticacao';
+          'usuario/autenticacao';
       String device_id = await DeviceId.getID;
       Map params = {
         'login': login,

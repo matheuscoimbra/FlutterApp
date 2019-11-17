@@ -71,11 +71,8 @@ class _LoginPageState extends State<LoginPage> {
   loginHeader() => Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Image(
-            image: NetworkImage(
-                "https://www.policiacivil.ma.gov.br/wp-content/uploads/2017/04/logo-governoma-2015.png"),
-            fit: BoxFit.contain,
-          ),
+          CachedNetworkImage(
+              imageUrl: "https://www.policiacivil.ma.gov.br/wp-content/uploads/2017/04/logo-governoma-2015.png", fit: BoxFit.contain,),
 
           Text(
             "Bem-vindo ao GFIS",
