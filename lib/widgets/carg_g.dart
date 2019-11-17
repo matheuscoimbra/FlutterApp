@@ -1,5 +1,5 @@
 import 'package:fisc/page/acompanhamento/acompanhamento_form.dart';
-import 'package:fisc/page/home/Card.dart';
+import 'package:fisc/page/home/card.dart';
 import 'package:fisc/page/rotina/home_page.dart';
 import 'package:fisc/utils/nav.dart';
 import 'package:flutter/material.dart';

@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fisc/page/home/Card.dart';
+import 'package:fisc/page/home/card.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 
